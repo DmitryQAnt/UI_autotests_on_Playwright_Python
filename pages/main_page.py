@@ -4,6 +4,17 @@ from pages.locators.main_locators_page import MainLocatorsPage
 
 class MainPage(BasePage):
 
+    def __init__(self):
+        self.__test = None
+
+    @property
+    def buttons(self):
+        return self.page.locator('.tab_tab__1SPyG')
+
+    def button_bulki(self):
+        return self.buttons.filter(has=self.page.locator('//*[contains(text(), \'Булки\')]')).first
+
+
     def click_enter_button(self):
         self.click(MainLocatorsPage.ACCOUNT_LINK_BUTTON)
 
@@ -21,3 +32,4 @@ class MainPage(BasePage):
 
     def drag_cheese_to_basket(self):
         self.drag_and_drop_element(MainLocatorsPage.CHEESE, MainLocatorsPage.BASCKET_AREA)
+

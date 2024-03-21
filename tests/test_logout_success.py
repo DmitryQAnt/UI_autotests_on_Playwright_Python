@@ -1,15 +1,12 @@
 import pytest
 from playwright.sync_api import expect
 import allure  # Добавлен импорт модуля allure
-
-from assertions.assertions import Assertions
-from data.test_data import TestData
 from envconfig.envconfig import BrowserSet
-from pages.account_page import AccountPage
-from pages.locators.login_locators_page import LoginLocatorsPage
-from pages.locators.main_locators_page import MainLocatorsPage
 from pages.login_page import LoginPage
 from pages.main_page import MainPage
+from pages.account_page import AccountPage
+from assertions.assertions import Assertions
+from pages.locators.login_locators_page import LoginLocatorsPage
 
 
 class TestLogoutSuccessful(BrowserSet):
