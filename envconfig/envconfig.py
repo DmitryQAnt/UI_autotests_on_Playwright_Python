@@ -1,15 +1,14 @@
 import pytest
-from playwright.sync_api import sync_playwright, Browser
-from playwright.sync_api import expect
+from data.test_data import url
+from playwright.sync_api import Browser
 
-TEST_PAGE = "https://stellarburgers.nomoreparties.site/"
 
 @pytest.fixture(scope="function")
-def browser_page(browser: Browser):
+def start_page(browser: Browser):
     context = browser.new_context()
     page = context.new_page()
-    page.wait_for_url(TEST_PAGE)
-    page.set_default_timeout(DEFAULT_WAIT_2_SEC:=2000)
+    page.goto(url)
+    page.set_default_timeout(2000)
 
     yield page
 

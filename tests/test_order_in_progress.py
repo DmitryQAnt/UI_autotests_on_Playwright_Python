@@ -1,34 +1,35 @@
-import pytest
-from playwright.sync_api import expect
-import allure  # Добавлен импорт модуля allure
-
+import allure
 from assertions.assertions import Assertions
-from data.test_data import TestData
-from envconfig.envconfig import BrowserSet
+from data.test_data import valid_email, valid_password, ORDER_CONFIRMATION, ORDER_IN_PROGRESS
 from pages.locators.main_locators_page import MainLocatorsPage
-from pages.login_page import LoginPage
-from pages.main_page import MainPage
 
 
-
-class TestOrderInProgress(BrowserSet):
-    @pytest.mark.usefixtures('browser_fixture')
-    @allure.feature("Проверка начала выполнения заказа")
-    def test_login_success(self, browser_fixture):
-        main_page = MainPage(browser_fixture)
+@allure.feature("Проверка начала выполнения заказа")
+def test_login_success(main_page):
+    with allure.step("Нажимаем кнопку 'Войти' на главной странице"):
         main_page.click_enter_button()
-        login_page = LoginPage(browser_fixture)
-        login_page.set_email_address(TestData.valid_email)
-        login_page.set_password(TestData.valid_password)
-        login_page.click_login_button()
+
+    with allure.step("Вводим адрес электронной почты"):
+        main_page.login_page.set_email_address(valid_email)
+
+    with allure.step("Вводим пароль"):
+        main_page.login_page.set_password(valid_password)
+
+    with allure.step("Нажимаем кнопку 'Войти' для авторизации"):
+        main_page.login_page.click_login_button()
+
+    with allure.step("Нажимаем кнопку 'Начать заказ'"):
         main_page.click(MainLocatorsPage.START_ORDER)
-        assertions = Assertions(browser_fixture)
-        main_page.wait()
-        with allure.step("Проверяем, что заказ начал готовиться"):
-            assertions.check_text(MainLocatorsPage.CONFIRMATION_TEXT, TestData.ORDER_CONFIRMATION)
 
-        with allure.step("Закрываем окно"):
-            main_page.click(MainLocatorsPage.CLOSE_WINDOW)
+    with allure.step("Ожидаем кнопку подтверждения заказа"):
+        main_page.wait(main_page.confirmation_button)
 
-        with allure.step("Проверяем, что заказ начал готовиться"):
-            assertions.check_text(MainLocatorsPage.START_ORDER, TestData.ORDER_IN_PROGRESS)
+    with allure.step("Проверяем, что заказ начал готовиться"):
+        Assertions.check_text(main_page.confirmation_button, ORDER_CONFIRMATION)
+
+    with allure.step("Закрываем окно подтверждения заказа"):
+        main_page.click(MainLocatorsPage.CLOSE_WINDOW)
+
+    with allure.step("Проверяем, что заказ находится в процессе выполнения"):
+        Assertions.check_text(main_page.start_order_locator, ORDER_IN_PROGRESS)
+

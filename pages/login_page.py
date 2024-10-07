@@ -4,6 +4,10 @@ from pages.locators.login_locators_page import LoginLocatorsPage
 
 class LoginPage(BasePage):
 
+    @property
+    def login_button_locator(self):
+        return self.page.locator(LoginLocatorsPage.TEXT_CONFIRMATION)
+
     def set_email_address(self, email_address):
         self.set(LoginLocatorsPage.LOGIN_FIELD, email_address)
 

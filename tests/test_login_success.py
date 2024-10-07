@@ -1,40 +1,23 @@
-import pytest
-from playwright.sync_api import expect
-import allure  # Добавлен импорт модуля allure
-
+import allure
 from assertions.assertions import Assertions
-from envconfig.envconfig import BrowserSet
-from pages.locators.main_locators_page import MainLocatorsPage
-from pages.login_page import LoginPage
-from pages.main_page import MainPage
+from data.test_data import valid_email, valid_password, ORDER_IN_PROGRESS
 
 
-class TestLoginSuccess(BrowserSet):
-    @pytest.mark.usefixtures('browser_fixture')
-    @allure.feature("Вход в систему")
-    @allure.story("Успешный вход в систему")
-    def test_login_success(self, browser_fixture):
-        main_page = MainPage(browser_fixture)
+@allure.feature("Вход в систему")
+@allure.story("Успешный вход в систему")
+def test_login_success(main_page):
+    with allure.step("Нажимаем кнопку 'Войти' на главной странице"):
         main_page.click_enter_button()
-        login_page = LoginPage(browser_fixture)
-        login_page.set_email_address(TestData.valid_email)
-        login_page.set_password(TestData.valid_password)
-        login_page.click_login_button()
-        assertions = Assertions(browser_fixture)
-        with allure.step('Проверяем, что кнопка "Оформить заказ" появилась'):
-            assertions.check_text(MainLocatorsPage.START_ORDER, TestData.ORDER_IN_PROGRESS)
 
+    with allure.step("Вводим адрес электронной почты"):
+        main_page.login_page.set_email_address(valid_email)
 
-    @pytest.mark.usefixtures('browser_fixture')
-    @allure.feature("Вход в систему")
-    @allure.story("Успешный вход в систему")
-    def test_login_success(self, browser_fixture):
-        main_page = MainPage(browser_fixture)
-        main_page.click_enter_button()
-        login_page = LoginPage(browser_fixture)
-        login_page.set_email_address(TestData.valid_email)
-        login_page.set_password(TestData.valid_password)
-        login_page.click_login_button()
-        assertions = Assertions(browser_fixture)
-        with allure.step('Проверяем, что кнопка "Оформить заказ" появилась'):
-            assertions.check_text(MainLocatorsPage.START_ORDER, TestData.ORDER_IN_PROGRESS)
+    with allure.step("Вводим пароль"):
+        main_page.login_page.set_password(valid_password)
+
+    with allure.step("Нажимаем кнопку 'Войти' для авторизации"):
+        main_page.login_page.click_login_button()
+
+    with allure.step("Проверяем, что кнопка 'Оформить заказ' появилась"):
+        Assertions.check_text(main_page.start_order_locator, ORDER_IN_PROGRESS)
+

@@ -1,19 +1,28 @@
+from playwright.sync_api import Page
+
 from pages.base_page import BasePage
 from pages.locators.main_locators_page import MainLocatorsPage
 
 
 class MainPage(BasePage):
 
-    def __init__(self):
-        self.__test = None
+    def __init__(self, page: Page, login_page, account_page, registration_page):
+        self.page = page
+        self.account_page = account_page
+        self.login_page = login_page
+        self.registration_page = registration_page
 
     @property
-    def buttons(self):
-        return self.page.locator('.tab_tab__1SPyG')
+    def price_counter_locator(self):
+        return self.page.locator(MainLocatorsPage.PRICE_COUNTER)
 
-    def button_bulki(self):
-        return self.buttons.filter(has=self.page.locator('//*[contains(text(), \'Булки\')]')).first
+    @property
+    def start_order_locator(self):
+        return self.page.locator(MainLocatorsPage.START_ORDER)
 
+    @property
+    def confirmation_button(self):
+        return self.page.locator(MainLocatorsPage.CONFIRMATION_TEXT)
 
     def click_enter_button(self):
         self.click(MainLocatorsPage.ACCOUNT_LINK_BUTTON)
@@ -32,4 +41,3 @@ class MainPage(BasePage):
 
     def drag_cheese_to_basket(self):
         self.drag_and_drop_element(MainLocatorsPage.CHEESE, MainLocatorsPage.BASCKET_AREA)
-

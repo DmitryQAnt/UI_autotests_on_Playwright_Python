@@ -1,2 +1,2 @@
 
-pytest_plugins = ['envconfig.envconfig']
+pytest_plugins = ["envconfig.envconfig", "envconfig.page_objects"]

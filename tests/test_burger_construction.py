@@ -1,14 +1,10 @@
-import pytest
-from playwright.sync_api import expect
 import allure
 from assertions.assertions import Assertions
-from pages.locators.main_locators_page import MainLocatorsPage
-from pages.main_page import MainPage
+from data.test_data import EXPECTED_BURGER_PRICE
 
 
 @allure.title("Собираем бургер(проверка на Драг энд дроп)")
-def test_burger_construction_is_ok(browser_fixture):
-    main_page = MainPage(browser_fixture)
+def test_burger_construction_is_ok(main_page):
     with allure.step("Берем булки"):
         main_page.drag_buns_to_basket()
 
@@ -22,4 +18,4 @@ def test_burger_construction_is_ok(browser_fixture):
         main_page.drag_fillings_to_basket()
 
     with allure.step("Смотрим, что цена соответствует ожидаемой"):
-        Assertions.check_text(MainLocatorsPage.PRICE_COUNTER, TestData.EXPECTED_BURGER_PRICE)
+        Assertions.check_text(main_page.price_counter_locator, EXPECTED_BURGER_PRICE)

@@ -1,28 +1,29 @@
-import pytest
-from playwright.sync_api import expect
-import allure  # Добавлен импорт модуля allure
-from envconfig.envconfig import BrowserSet
-from pages.login_page import LoginPage
-from pages.main_page import MainPage
-from pages.account_page import AccountPage
+import allure
 from assertions.assertions import Assertions
-from pages.locators.login_locators_page import LoginLocatorsPage
+from data.test_data import valid_email, valid_password, LOGIN_BUTTON
 
 
-class TestLogoutSuccessful(BrowserSet):
-    @pytest.mark.usefixtures('browser_fixture')
-    @allure.feature("Выход из системы")
-    @allure.story("Успешный выход из системы")
-    def test_logout_success(self, browser_fixture):
-        main_page = MainPage(browser_fixture)
+@allure.feature("Выход из системы")
+@allure.story("Успешный выход из системы")
+def test_logout_success(main_page):
+    with allure.step("Нажимаем кнопку 'Войти' на главной странице"):
         main_page.click_enter_button()
-        login_page = LoginPage(browser_fixture)
-        login_page.set_email_address(TestData.valid_email)
-        login_page.set_password(TestData.valid_password)
-        login_page.click_login_button()
+
+    with allure.step("Вводим адрес электронной почты"):
+        main_page.login_page.set_email_address(valid_email)
+
+    with allure.step("Вводим пароль"):
+        main_page.login_page.set_password(valid_password)
+
+    with allure.step("Нажимаем кнопку 'Войти' для авторизации"):
+        main_page.login_page.click_login_button()
+
+    with allure.step("Нажимаем на кнопку 'Личный кабинет'"):
         main_page.click_on_account_button()
-        account_page = AccountPage(browser_fixture)
-        account_page.click_on_logout_button()
-        assertions = Assertions(browser_fixture)
-        with allure.step('Проверяем, что кнопка "Оформить заказ" появилась'):
-            assertions.check_text(LoginLocatorsPage.TEXT_CONFIRMATION, TestData.LOGIN_BUTTON)
+
+    with allure.step("Нажимаем на кнопку 'Выход'"):
+        main_page.account_page.click_on_logout_button()
+
+    with allure.step("Проверяем, что кнопка 'Войти' появилась"):
+        Assertions.check_text(main_page.login_page.login_button_locator, LOGIN_BUTTON)
+
