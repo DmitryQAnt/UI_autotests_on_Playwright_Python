@@ -27,7 +27,8 @@ jobs:
           playwright install
       - name: Install Allure
         run: |
-          wget -qO allure.zip "https://github.com/allure-framework/allure2/releases/latest/download/allure.zip"
+          VERSION=$(curl -s https://api.github.com/repos/allure-framework/allure2/releases/latest | jq -r .tag_name)
+          wget -O allure.zip "https://github.com/allure-framework/allure2/releases/download/$VERSION/allure-$VERSION.zip"
           unzip allure.zip -d /opt/allure
           echo "/opt/allure/bin" >> $GITHUB_PATH
       - name: Run tests
