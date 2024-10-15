@@ -15,37 +15,29 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.12'
-
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install allure-pytest  # Установка Allure pytest
-
       - name: Install Playwright browsers
         run: |
           playwright install
-
-      - name: Install Allure CLI
+      - name: Install Allure
         run: |
-          curl -o allure.zip -L "https://repo1.maven.org/maven2/io/qameta/allure/allure-commandline/2.21.0/allure-commandline-2.21.0.zip"
-          unzip allure.zip -d allure
-          echo "$GITHUB_WORKSPACE/allure/allure-2.21.0/bin" >> $GITHUB_PATH
-
-      - name: Run tests with Allure
+          wget -O allure.zip "https://github.com/allure-framework/allure2/releases/latest/download/allure-2.17.2.zip"
+          unzip allure.zip -d /opt/allure
+          echo "/opt/allure/bin" >> $GITHUB_PATH
+      - name: Run tests
         run: |
-          pytest --alluredir=allure-results  # Запуск тестов с записью результатов в allure-results
-
+          pytest --alluredir=allure-results
       - name: Generate Allure Report
         run: |
-          allure generate allure-results --clean -o allure-report  # Генерация Allure отчета
-
-      - name: Upload Allure Report Artifact
-        uses: actions/upload-artifact@v4  # Использование актуальной версии
+          allure generate allure-results --clean -o allure-report
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: allure-report
