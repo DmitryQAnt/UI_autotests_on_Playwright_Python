@@ -27,4 +27,4 @@ jobs:
           playwright install
       - name: Run tests
         run: |
-          pytest --headless --html=report.html
+          pytest --headless
