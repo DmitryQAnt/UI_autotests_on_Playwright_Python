@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install allure-pytest  # Установка Allure pytest
+          pip install allure-pytest  # Setup Allure pytest
 
       - name: Install Playwright browsers
         run: |
@@ -32,14 +32,14 @@ jobs:
 
       - name: Run tests with Allure
         run: |
-          pytest --alluredir=allure-results  # Запуск тестов с записью результатов в allure-results
+          pytest --alluredir=allure-results  # Run tests with allure-results
 
       - name: Generate Allure Report
         run: |
-          allure generate allure-results --clean -o allure-report  # Генерация Allure отчета
+          allure generate allure-results --clean -o allure-report  # Allure-report generation
 
       - name: Upload Allure Report Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: allure-report
           path: allure-report
