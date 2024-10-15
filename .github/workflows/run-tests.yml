@@ -24,22 +24,28 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install allure-pytest  # Setup Allure pytest
+          pip install allure-pytest  # Установка Allure pytest
 
       - name: Install Playwright browsers
         run: |
           playwright install
 
+      - name: Install Allure CLI
+        run: |
+          curl -o allure.zip -L "https://repo1.maven.org/maven2/io/qameta/allure/allure-commandline/2.21.0/allure-commandline-2.21.0.zip"
+          unzip allure.zip -d allure
+          echo "$GITHUB_WORKSPACE/allure/allure-2.21.0/bin" >> $GITHUB_PATH
+
       - name: Run tests with Allure
         run: |
-          pytest --alluredir=allure-results  # Run tests with allure-results
+          pytest --alluredir=allure-results  # Запуск тестов с записью результатов в allure-results
 
       - name: Generate Allure Report
         run: |
-          allure generate allure-results --clean -o allure-report  # Allure-report generation
+          allure generate allure-results --clean -o allure-report  # Генерация Allure отчета
 
       - name: Upload Allure Report Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3  # Использование актуальной версии
         with:
           name: allure-report
           path: allure-report
