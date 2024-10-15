@@ -10,11 +10,3 @@ class Assertions:
     def check_text(cls, locator, expected_text):
 
         expect(locator).to_have_text(expected_text)
-
-    # def check(self, locator):
-    #     self.page.expect(locator)
-#
-#     def check_login_success(self):
-#         button_locator = self.page.locator("[role='button']").first()
-# button_locator.expect().to_have_text("Оформить заказ")
-# self.page.expect(self.page.get_by_role("button", name="Оформить заказ")).to_have_text("Оформить заказ")

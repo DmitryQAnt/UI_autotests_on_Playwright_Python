@@ -20,4 +20,3 @@ def test_login_success(main_page):
 
     with allure.step("Проверяем, что кнопка 'Оформить заказ' появилась"):
         Assertions.check_text(main_page.start_order_locator, ORDER_IN_PROGRESS)
-
