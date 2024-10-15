@@ -38,14 +38,16 @@ jobs:
           echo "$GITHUB_WORKSPACE/allure/allure-2.21.0/bin" >> $GITHUB_PATH
 
       - name: Run tests
-        id: run-tests
         run: |
-          # Запуск тестов и генерация отчета
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            allure generate allure-results --clean -o allure-report/tests-after-pull-request-${{ github.run_number }}
-          else
-            allure generate allure-results --clean -o allure-report/tests_run_at_$(date +'%Y-%m-%d_%H-%M-%S')
-          fi
+            pytest --alluredir=allure-results  # Запуск тестов и сохранение результатов в allure-results
+
+      - name: Generate Allure report
+        run: |
+            if [ "${{ github.event_name }}" == "pull_request" ]; then
+              allure generate allure-results --clean -o allure-report/tests-after-pull-request-${{ github.run_number }}
+            else
+              allure generate allure-results --clean -o allure-report/tests_run_at_$(date +'%Y-%m-%d_%H-%M-%S')
+            fi
       - name: Upload Allure Report Artifact
         uses: actions/upload-artifact@v4  # Использование актуальной версии
         with:
