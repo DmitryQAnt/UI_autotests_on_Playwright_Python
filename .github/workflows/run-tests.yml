@@ -15,16 +15,31 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.12'
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+          pip install allure-pytest  # Установка Allure pytest
+
       - name: Install Playwright browsers
         run: |
           playwright install
-      - name: Run tests
+
+      - name: Run tests with Allure
         run: |
-          pytest
+          pytest --alluredir=allure-results  # Запуск тестов с записью результатов в allure-results
+
+      - name: Generate Allure Report
+        run: |
+          allure generate allure-results --clean -o allure-report  # Генерация Allure отчета
+
+      - name: Upload Allure Report Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: allure-report
+          path: allure-report
