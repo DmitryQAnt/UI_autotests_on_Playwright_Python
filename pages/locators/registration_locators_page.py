@@ -1,5 +1,13 @@
+"""
+This module contains locators for the elements present on the registration page of the web application.
+"""
+
 
 class RegistrationLocatorsPage:
+    """
+    A class containing locators for elements on the registration page.
+    """
+
     REGISTRATION_APPROVE_BUTTON = "//button[text()='Зарегистрироваться']"
     REGISTRATION_PASSWORD_FIELD = "//fieldset[3]/div/div/input"
     REGISTRATION_EMAIL_FIELD = "//fieldset[2]/div/div/input"
