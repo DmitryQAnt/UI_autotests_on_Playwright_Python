@@ -5,6 +5,7 @@
 3. The project includes authorization tests using random credentials.
 4. There are tests for drag-and-drop functionality and verification of pop-up windows.
 5. The test site used is from the Yandex Praktikum learning stack.
+6. Continuous Integration (CI) is implemented to run tests automatically based on time schedules and pull requests.
 
 **Technologies Used:** Python 3.12, Playwright 1.42, Allure-Pytest 2.13.3
 
